@@ -1,0 +1,1189 @@
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py makemigrations articles
+No installed app with label 'articles'.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py makemigrations articles
+Migrations for 'articles':
+  articles\migrations\0001_initial.py
+    - Create model Article
+    - Create model Comment
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py sqlmigrate articles 0001
+BEGIN;
+--
+-- Create model Article
+--
+CREATE TABLE "articles_article" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "article_title" varchar(200) NOT NULL, "article_text" text NOT NULL, "pub_date" datetime NOT NULL);
+--
+-- Create model Comment
+--
+CREATE TABLE "articles_comment" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "author_name" varchar(50) NOT NULL, "comment_text" varchar(200) NOT NULL, "article_id" bigint NOT NULL REFERENCES "articles_article" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "articles_comment_article_id_59ff1409" ON "articles_comment" ("article_id");
+COMMIT;
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, articles, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying articles.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sessions.0001_initial... OK
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py shell
+Python 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from articles.models import Article, Comment
+>>> Article.objects.all()
+<QuerySet []>
+>>> from django.utils import timezone
+>>> a = Article(article_title = "Какая-то крутая история", article_text = "какой-то крутой текст", pub_date = timezone.now())
+>>> a.save()
+>>> a.article_title
+'Какая-то крутая история'
+>>> quit()
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py shell
+Python 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from articles.models import Article, Comment
+>>> Article.object.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'Article' has no attribute 'object'
+>>> Article.objects.all()
+<QuerySet [<Article: Какая-то крутая история>]>
+>>> quit()
+
+(my_env) C:\Users\HP\Desktop\cc\com> from articles.models import Article, Comment
+"from" не является внутренней или внешней
+командой, исполняемой программой или пакетным файлом.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py shell
+Python 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from articles.models import Article, Comment
+>>> from django.utils import timezone
+>>> current_year = timezone.now().year
+>>> current_year
+2023
+>>> a
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'a' is not defined
+>>> a.comment_set.create(author_name = "John", comment_text = "Cool!"
+... a.comment_set.create(author_name = "Laura", comment_text = "Norm"
+  File "<console>", line 2
+    a.comment_set.create(author_name = "Laura", comment_text = "Norm"
+    ^
+SyntaxError: invalid syntax
+>>> quit
+Use quit() or Ctrl-Z plus Return to exit
+>>> quit()
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:49:01
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+Not Found: /
+[06/Mar/2023 17:49:15] "GET / HTTP/1.1" 404 2165
+[06/Mar/2023 17:49:26] "GET /admin HTTP/1.1" 301 0
+[06/Mar/2023 17:49:26] "GET /admin/ HTTP/1.1" 302 0
+[06/Mar/2023 17:49:26] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2218
+[06/Mar/2023 17:49:28] "GET /static/admin/css/base.css HTTP/1.1" 200 20344
+[06/Mar/2023 17:49:28] "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[06/Mar/2023 17:49:28] "GET /static/admin/css/login.css HTTP/1.1" 200 958
+[06/Mar/2023 17:49:28] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2619
+[06/Mar/2023 17:49:28] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3763
+[06/Mar/2023 17:49:28] "GET /static/admin/css/responsive.css HTTP/1.1" 200 18854
+[06/Mar/2023 17:49:28] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 796
+[06/Mar/2023 17:49:28] "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[06/Mar/2023 17:49:28] "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py createsuperuser
+Username (leave blank to use 'hp'): admin
+Email address: a.sabina.aa@mail.ru
+Password:
+Password (again):
+This password is too common.
+This password is entirely numeric.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:52:05
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:52:28] "GET /admin/ HTTP/1.1" 302 0
+[06/Mar/2023 17:52:28] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2218
+[06/Mar/2023 17:52:41] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[06/Mar/2023 17:52:41] "GET /admin/ HTTP/1.1" 200 3580
+[06/Mar/2023 17:52:41] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 380
+[06/Mar/2023 17:52:41] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[06/Mar/2023 17:52:41] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[06/Mar/2023 17:52:41] "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+C:\Users\HP\Desktop\cc\com\com\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:53:16
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:53:17] "GET /admin/ HTTP/1.1" 200 3876
+C:\Users\HP\Desktop\cc\com\articles\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:55:42
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:55:43] "GET /admin/ HTTP/1.1" 200 5031
+[06/Mar/2023 17:56:00] "GET /admin/articles/article/ HTTP/1.1" 200 7384
+[06/Mar/2023 17:56:00] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 17:56:03] "GET /static/admin/css/changelists.css HTTP/1.1" 200 6395
+[06/Mar/2023 17:56:03] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[06/Mar/2023 17:56:03] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[06/Mar/2023 17:56:03] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 288580
+[06/Mar/2023 17:56:03] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8985
+[06/Mar/2023 17:56:03] "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[06/Mar/2023 17:56:03] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[06/Mar/2023 17:56:03] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[06/Mar/2023 17:56:03] "GET /static/admin/js/filters.js HTTP/1.1" 200 966
+[06/Mar/2023 17:56:03] "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+[06/Mar/2023 17:56:03] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+C:\Users\HP\Desktop\cc\com\articles\apps.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:58:42
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:58:42] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 17:58:42] "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 17:58:42] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[06/Mar/2023 17:58:43] "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[06/Mar/2023 17:58:43] "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+C:\Users\HP\Desktop\cc\com\articles\models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:01:09
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 18:01:11] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:11] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:11] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[06/Mar/2023 18:01:11] "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[06/Mar/2023 18:01:25] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:25] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:34] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:34] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:35] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:35] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:36] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:36] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:55] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:55] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:58] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:58] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:02:26] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:02:26] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:02:30] "GET /admin/articles/article/add/ HTTP/1.1" 200 8175
+[06/Mar/2023 18:02:30] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:02:32] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[06/Mar/2023 18:02:32] "GET /static/admin/css/forms.css HTTP/1.1" 200 8944
+[06/Mar/2023 18:02:32] "GET /static/admin/js/calendar.js HTTP/1.1" 200 8466
+[06/Mar/2023 18:02:32] "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19379
+[06/Mar/2023 18:02:32] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[06/Mar/2023 18:02:32] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11297
+[06/Mar/2023 18:02:32] "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+[06/Mar/2023 18:02:32] "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+[06/Mar/2023 18:02:38] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:02:40] "GET /admin/ HTTP/1.1" 200 5043
+[06/Mar/2023 18:04:14] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:04:14] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:04:16] "GET /admin/articles/article/add/ HTTP/1.1" 200 8175
+[06/Mar/2023 18:04:16] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:05:13] "POST /admin/articles/article/add/ HTTP/1.1" 302 0
+[06/Mar/2023 18:05:13] "GET /admin/articles/article/ HTTP/1.1" 200 7876
+[06/Mar/2023 18:05:13] "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:05:13] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[06/Mar/2023 18:05:23] "GET /admin/articles/article/add/ HTTP/1.1" 200 8175
+[06/Mar/2023 18:05:25] "GET /admin/articles/article/ HTTP/1.1" 200 7639
+[06/Mar/2023 18:05:25] "GET /admin/ HTTP/1.1" 200 5385
+
+(my_env) C:\Users\HP\Desktop\cc\com>pip install django-grappelli
+Collecting django-grappelli
+  Downloading django_grappelli-3.0.4-py2.py3-none-any.whl (1.8 MB)
+     ---------------------------------------- 1.8/1.8 MB 1.2 MB/s eta 0:00:00
+Installing collected packages: django-grappelli
+Successfully installed django-grappelli-3.0.4
+WARNING: You are using pip version 22.0.4; however, version 23.0.1 is available.
+You should consider upgrading via the 'C:\Users\HP\Desktop\cc\my_env\Scripts\python.exe -m pip install --upgrade pip' command.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py collectstatic
+
+You have requested to collect static files at the destination
+location as specified in your settings.
+
+This will overwrite existing files!
+Are you sure you want to do this?
+
+Type 'yes' to continue, or 'no' to cancel: yes
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\com\manage.py", line 22, in <module>
+    main()
+  File "C:\Users\HP\Desktop\cc\com\manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\__init__.py", line 446, in execute_from_command_line
+    utility.execute()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\__init__.py", line 440, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\base.py", line 402, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\base.py", line 448, in execute
+    output = self.handle(*args, **options)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\contrib\staticfiles\management\commands\collectstatic.py", line 209, in handle
+    collected = self.collect()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\contrib\staticfiles\management\commands\collectstatic.py", line 135, in collect
+    handler(path, prefixed_path, storage)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\contrib\staticfiles\management\commands\collectstatic.py", line 368, in copy_file
+    if not self.delete_file(path, prefixed_path, source_storage):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\contrib\staticfiles\management\commands\collectstatic.py", line 278, in delete_file
+    if self.storage.exists(prefixed_path):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\files\storage.py", line 373, in exists
+    return os.path.lexists(self.path(name))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\contrib\staticfiles\storage.py", line 39, in path
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: You're using the staticfiles app without having set the STATIC_ROOT setting to a filesystem path.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py collectstatic
+Found another file with the destination path 'admin\js\actions.js'. It will be ignored since only the first encountered file is collected. If this is not what you want, make sure every static file has a unique path.
+Found another file with the destination path 'admin\js\admin\DateTimeShortcuts.js'. It will be ignored since only the first encountered file is collected. If this is not what you want, make sure every static file has a unique path.
+Found another file with the destination path 'admin\js\admin\RelatedObjectLookups.js'. It will be ignored since only the first encountered file is collected. If this is not what you want, make sure every static file has a unique path.
+
+685 static files copied to 'C:\Users\HP\Desktop\cc\com\com\static'.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:17:57
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 18:18:08] "GET /admin/ HTTP/1.1" 200 10637
+[06/Mar/2023 18:18:09] "GET /static/grappelli/jquery/jquery-migrate-3.0.1.min.js HTTP/1.1" 200 11421
+[06/Mar/2023 18:18:09] "GET /static/grappelli/js/grappelli.min.js HTTP/1.1" 200 27664
+[06/Mar/2023 18:18:09] "GET /static/grappelli/stylesheets/screen.css HTTP/1.1" 200 184243
+[06/Mar/2023 18:18:09] "GET /static/grappelli/jquery/jquery.min.js HTTP/1.1" 200 89501
+[06/Mar/2023 18:18:09] "GET /static/grappelli/jquery/ui/jquery-ui.min.js HTTP/1.1" 200 254916
+[06/Mar/2023 18:18:09] "GET /static/grappelli/jquery/ui/jquery-ui.min.css HTTP/1.1" 200 30801
+[06/Mar/2023 18:18:09] "GET /static/grappelli/stylesheets/mueller/grid/output.css HTTP/1.1" 200 36537
+[06/Mar/2023 18:18:09] "GET /static/grappelli/images/icons-small-sc29b5b842f.png HTTP/1.1" 200 2438
+[06/Mar/2023 18:18:23] "GET /admin/auth/user/ HTTP/1.1" 200 16704
+[06/Mar/2023 18:18:23] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 7923
+[06/Mar/2023 18:18:23] "GET /static/admin/js/actions.js HTTP/1.1" 200 8337
+[06/Mar/2023 18:18:23] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:18:23] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[06/Mar/2023 18:18:23] "GET /static/grappelli/images/icons-s79f97b581c.png HTTP/1.1" 200 9844
+[06/Mar/2023 18:18:23] "GET /static/grappelli/images/backgrounds/changelist-results.png HTTP/1.1" 200 244
+[06/Mar/2023 18:18:23] "GET /static/grappelli/images/icons/form-select.png HTTP/1.1" 200 289
+[06/Mar/2023 18:18:34] "GET /admin/ HTTP/1.1" 200 10637
+[06/Mar/2023 18:18:36] "GET /admin/articles/article/ HTTP/1.1" 200 12064
+[06/Mar/2023 18:18:36] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:18:37] "GET /admin/articles/article/2/change/ HTTP/1.1" 200 17647
+[06/Mar/2023 18:18:38] "GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:38] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:18:38] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+[06/Mar/2023 18:18:38] "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 68
+[06/Mar/2023 18:18:43] "GET /admin/articles/article/ HTTP/1.1" 200 12064
+[06/Mar/2023 18:18:46] "GET /admin/ HTTP/1.1" 200 10637
+C:\Users\HP\Desktop\cc\com\com\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:27:01
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+C:\Users\HP\Desktop\cc\com\articles\views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:36:02
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:36:19
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 18:36:26] "GET /admin/ HTTP/1.1" 200 10637
+[06/Mar/2023 18:36:26] "GET /static/grappelli/jquery/ui/jquery-ui.min.css HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/stylesheets/screen.css HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/js/grappelli.min.js HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/stylesheets/mueller/grid/output.css HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/jquery/jquery.min.js HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/jquery/ui/jquery-ui.min.js HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/jquery/jquery-migrate-3.0.1.min.js HTTP/1.1" 304 0
+[06/Mar/2023 18:36:26] "GET /static/grappelli/images/icons-small-sc29b5b842f.png HTTP/1.1" 304 0
+Not Found: /
+[06/Mar/2023 18:36:50] "GET / HTTP/1.1" 404 2275
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'end'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 5: 'end', expected 'endblock'. Did you forget to register or load this tag?
+[06/Mar/2023 18:37:00] "GET /articles/ HTTP/1.1" 500 164486
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'end'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 5: 'end', expected 'endblock'. Did you forget to register or load this tag?
+[06/Mar/2023 18:39:07] "GET /articles/ HTTP/1.1" 500 164623
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'end'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 558, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 5: 'end', expected 'endblock'. Did you forget to register or load this tag?
+[06/Mar/2023 18:39:14] "GET /articles/ HTTP/1.1" 500 164486
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:39:29] "GET /articles/ HTTP/1.1" 500 158978
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 505, in parse
+    compile_func = self.tags[command]
+KeyError: 'blockcontent'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 507, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 568, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 8: 'blockcontent'. Did you forget to register or load this tag?
+[06/Mar/2023 18:40:04] "GET /articles/ HTTP/1.1" 500 150698
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:41:21] "GET /articles/ HTTP/1.1" 500 158978
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:41:22] "GET /articles/ HTTP/1.1" 500 158978
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:41:22] "GET /articles/ HTTP/1.1" 500 158978
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:41:33] "GET /articles/ HTTP/1.1" 500 159070
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:46:06] "GET /articles/ HTTP/1.1" 500 158974
+Internal Server Error: /articles/
+Traceback (most recent call last):
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\HP\Desktop\cc\com\articles\views.py", line 4, in index
+    return render(request, 'articles/list.html')
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 132, in render
+    compiled_parent = self.get_parent(context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 129, in get_parent
+    return self.find_template(parent, context)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 107, in find_template
+    template, origin = context.template.engine.find_template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\engine.py", line 157, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\cached.py", line 57, in get_template
+    template = super().get_template(template_name, skip)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loaders\base.py", line 28, in get_template
+    return Template(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 154, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 200, in compile_nodelist
+    return parser.parse()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 513, in parse
+    raise self.error(token, e)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 511, in parse
+    compiled_result = compile_func(self, token)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\loader_tags.py", line 232, in do_block
+    nodelist = parser.parse(("endblock",))
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 518, in parse
+    self.unclosed_block_tag(parse_until)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\template\base.py", line 581, in unclosed_block_tag
+    raise self.error(token, msg)
+django.template.exceptions.TemplateSyntaxError: Unclosed tag on line 8: 'block'. Looking for one of: endblock.
+[06/Mar/2023 18:46:23] "GET /articles/ HTTP/1.1" 500 158982
+[06/Mar/2023 18:47:41] "GET /articles/ HTTP/1.1" 200 185
+[06/Mar/2023 18:54:59] "GET /articles/ HTTP/1.1" 200 212
+C:\Users\HP\Desktop\cc\com\articles\views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:55:01
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+C:\Users\HP\Desktop\cc\com\articles\urls.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\threading.py", line 980, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\threading.py", line 917, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\urls.py", line 24, in check_resolver
+    return check_method()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\HP\Desktop\cc\com\com\urls.py", line 21, in <module>
+    path('articles/', include('articles.urls')),
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\HP\Desktop\cc\com\articles\urls.py", line 8, in <module>
+    path('<int: article_id/>', views.detail, name = 'detail'),
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\conf.py", line 80, in _path
+    pattern = Pattern(route, name=name, is_endpoint=True)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 304, in __init__
+    self.converters = _route_to_regex(str(route), is_endpoint)[1]
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 266, in _route_to_regex
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: URL route '<int: article_id/>' cannot contain whitespace in angle brackets <…>.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\threading.py", line 980, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\threading.py", line 917, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\urls.py", line 24, in check_resolver
+    return check_method()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\HP\Desktop\cc\com\com\urls.py", line 21, in <module>
+    path('articles/', include('articles.urls')),
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\HP\Desktop\cc\com\articles\urls.py", line 8, in <module>
+    path('<int: article_id/>', views.detail, name = 'detail'),
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\conf.py", line 80, in _path
+    pattern = Pattern(route, name=name, is_endpoint=True)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 304, in __init__
+    self.converters = _route_to_regex(str(route), is_endpoint)[1]
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 266, in _route_to_regex
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: URL route '<int: article_id/>' cannot contain whitespace in angle brackets <…>.
+C:\Users\HP\Desktop\cc\com\articles\views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\threading.py", line 980, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\threading.py", line 917, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\management\base.py", line 475, in check
+    all_issues = checks.run_checks(
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\urls.py", line 14, in check_url_config
+    return check_resolver(resolver)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\core\checks\urls.py", line 24, in check_resolver
+    return check_method()
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 494, in check
+    for pattern in self.url_patterns:
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 715, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\utils\functional.py", line 57, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 708, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\HP\Desktop\cc\com\com\urls.py", line 21, in <module>
+    path('articles/', include('articles.urls')),
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\conf.py", line 38, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.3568.0_x64__qbz5n2kfra8p0\lib\importlib\__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "C:\Users\HP\Desktop\cc\com\articles\urls.py", line 8, in <module>
+    path('<int: article_id/>', views.detail, name = 'detail'),
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\conf.py", line 80, in _path
+    pattern = Pattern(route, name=name, is_endpoint=True)
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 304, in __init__
+    self.converters = _route_to_regex(str(route), is_endpoint)[1]
+  File "C:\Users\HP\Desktop\cc\my_env\lib\site-packages\django\urls\resolvers.py", line 266, in _route_to_regex
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: URL route '<int: article_id/>' cannot contain whitespace in angle brackets <…>.
+
