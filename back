@@ -1,0 +1,281 @@
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py makemigrations articles
+No installed app with label 'articles'.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py makemigrations articles
+Migrations for 'articles':
+  articles\migrations\0001_initial.py
+    - Create model Article
+    - Create model Comment
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py sqlmigrate articles 0001
+BEGIN;
+--
+-- Create model Article
+--
+CREATE TABLE "articles_article" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "article_title" varchar(200) NOT NULL, "article_text" text NOT NULL, "pub_date" datetime NOT NULL);
+--
+-- Create model Comment
+--
+CREATE TABLE "articles_comment" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "author_name" varchar(50) NOT NULL, "comment_text" varchar(200) NOT NULL, "article_id" bigint NOT NULL REFERENCES "articles_article" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "articles_comment_article_id_59ff1409" ON "articles_comment" ("article_id");
+COMMIT;
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, articles, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying articles.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sessions.0001_initial... OK
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py shell
+Python 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from articles.models import Article, Comment
+>>> Article.objects.all()
+<QuerySet []>
+>>> from django.utils import timezone
+>>> a = Article(article_title = "Какая-то крутая история", article_text = "какой-то крутой текст", pub_date = timezone.now())
+>>> a.save()
+>>> a.article_title
+'Какая-то крутая история'
+>>> quit()
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py shell
+Python 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from articles.models import Article, Comment
+>>> Article.object.all()
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'Article' has no attribute 'object'
+>>> Article.objects.all()
+<QuerySet [<Article: Какая-то крутая история>]>
+>>> quit()
+
+(my_env) C:\Users\HP\Desktop\cc\com> from articles.models import Article, Comment
+"from" не является внутренней или внешней
+командой, исполняемой программой или пакетным файлом.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py shell
+Python 3.9.13 (tags/v3.9.13:6de2ca5, May 17 2022, 16:36:42) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from articles.models import Article, Comment
+>>> from django.utils import timezone
+>>> current_year = timezone.now().year
+>>> current_year
+2023
+>>> a
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+NameError: name 'a' is not defined
+>>> a.comment_set.create(author_name = "John", comment_text = "Cool!"
+... a.comment_set.create(author_name = "Laura", comment_text = "Norm"
+  File "<console>", line 2
+    a.comment_set.create(author_name = "Laura", comment_text = "Norm"
+    ^
+SyntaxError: invalid syntax
+>>> quit
+Use quit() or Ctrl-Z plus Return to exit
+>>> quit()
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:49:01
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+Not Found: /
+[06/Mar/2023 17:49:15] "GET / HTTP/1.1" 404 2165
+[06/Mar/2023 17:49:26] "GET /admin HTTP/1.1" 301 0
+[06/Mar/2023 17:49:26] "GET /admin/ HTTP/1.1" 302 0
+[06/Mar/2023 17:49:26] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2218
+[06/Mar/2023 17:49:28] "GET /static/admin/css/base.css HTTP/1.1" 200 20344
+[06/Mar/2023 17:49:28] "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[06/Mar/2023 17:49:28] "GET /static/admin/css/login.css HTTP/1.1" 200 958
+[06/Mar/2023 17:49:28] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2619
+[06/Mar/2023 17:49:28] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3763
+[06/Mar/2023 17:49:28] "GET /static/admin/css/responsive.css HTTP/1.1" 200 18854
+[06/Mar/2023 17:49:28] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 796
+[06/Mar/2023 17:49:28] "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[06/Mar/2023 17:49:28] "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py createsuperuser
+Username (leave blank to use 'hp'): admin
+Email address: a.sabina.aa@mail.ru
+Password:
+Password (again):
+This password is too common.
+This password is entirely numeric.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+
+(my_env) C:\Users\HP\Desktop\cc\com>python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:52:05
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:52:28] "GET /admin/ HTTP/1.1" 302 0
+[06/Mar/2023 17:52:28] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2218
+[06/Mar/2023 17:52:41] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[06/Mar/2023 17:52:41] "GET /admin/ HTTP/1.1" 200 3580
+[06/Mar/2023 17:52:41] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 380
+[06/Mar/2023 17:52:41] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[06/Mar/2023 17:52:41] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[06/Mar/2023 17:52:41] "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+C:\Users\HP\Desktop\cc\com\com\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:53:16
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:53:17] "GET /admin/ HTTP/1.1" 200 3876
+C:\Users\HP\Desktop\cc\com\articles\admin.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:55:42
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:55:43] "GET /admin/ HTTP/1.1" 200 5031
+[06/Mar/2023 17:56:00] "GET /admin/articles/article/ HTTP/1.1" 200 7384
+[06/Mar/2023 17:56:00] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 17:56:03] "GET /static/admin/css/changelists.css HTTP/1.1" 200 6395
+[06/Mar/2023 17:56:03] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[06/Mar/2023 17:56:03] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[06/Mar/2023 17:56:03] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 288580
+[06/Mar/2023 17:56:03] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 8985
+[06/Mar/2023 17:56:03] "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[06/Mar/2023 17:56:03] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[06/Mar/2023 17:56:03] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[06/Mar/2023 17:56:03] "GET /static/admin/js/filters.js HTTP/1.1" 200 966
+[06/Mar/2023 17:56:03] "GET /static/admin/js/actions.js HTTP/1.1" 200 7872
+[06/Mar/2023 17:56:03] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+C:\Users\HP\Desktop\cc\com\articles\apps.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 17:58:42
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 17:58:42] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 17:58:42] "GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[06/Mar/2023 17:58:42] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 17:58:42] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[06/Mar/2023 17:58:43] "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[06/Mar/2023 17:58:43] "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+C:\Users\HP\Desktop\cc\com\articles\models.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 06, 2023 - 18:01:09
+Django version 4.1.7, using settings 'com.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+[06/Mar/2023 18:01:11] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:11] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:11] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[06/Mar/2023 18:01:11] "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[06/Mar/2023 18:01:25] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:25] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:34] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:34] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:35] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:35] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:36] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:36] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:55] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:55] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:01:58] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:01:58] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:02:26] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:02:26] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:02:30] "GET /admin/articles/article/add/ HTTP/1.1" 200 8175
+[06/Mar/2023 18:02:30] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:02:32] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[06/Mar/2023 18:02:32] "GET /static/admin/css/forms.css HTTP/1.1" 200 8944
+[06/Mar/2023 18:02:32] "GET /static/admin/js/calendar.js HTTP/1.1" 200 8466
+[06/Mar/2023 18:02:32] "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19379
+[06/Mar/2023 18:02:32] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[06/Mar/2023 18:02:32] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11297
+[06/Mar/2023 18:02:32] "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+[06/Mar/2023 18:02:32] "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+[06/Mar/2023 18:02:38] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:02:40] "GET /admin/ HTTP/1.1" 200 5043
+[06/Mar/2023 18:04:14] "GET /admin/articles/article/ HTTP/1.1" 200 7402
+[06/Mar/2023 18:04:14] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:04:16] "GET /admin/articles/article/add/ HTTP/1.1" 200 8175
+[06/Mar/2023 18:04:16] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:05:13] "POST /admin/articles/article/add/ HTTP/1.1" 302 0
+[06/Mar/2023 18:05:13] "GET /admin/articles/article/ HTTP/1.1" 200 7876
+[06/Mar/2023 18:05:13] "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /admin/jsi18n/ HTTP/1.1" 200 16066
+[06/Mar/2023 18:05:13] "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/js/filters.js HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[06/Mar/2023 18:05:13] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[06/Mar/2023 18:05:23] "GET /admin/articles/article/add/ HTTP/1.1" 200 8175
+[06/Mar/2023 18:05:25] "GET /admin/articles/article/ HTTP/1.1" 200 7639
+[06/Mar/2023 18:05:25] "GET /admin/ HTTP/1.1" 200 5385
+
+(my_env) C:\Users\HP\Desktop\cc\com>pip install django-grappelli
+Collecting django-grappelli
+  Downloading django_grappelli-3.0.4-py2.py3-none-any.whl (1.8 MB)
+     ---------------------------------------- 1.8/1.8 MB 1.2 MB/s eta 0:00:00
+Installing collected packages: django-grappelli
+Successfully installed django-grappelli-3.0.4
+WARNING: You are using pip version 22.0.4; however, version 23.0.1 is available.
+You should consider upgrading via the 'C:\Users\HP\Desktop\cc\my_env\Scripts\python.exe -m pip install --upgrade pip' command.
+
+(my_env) C:\Users\HP\Desktop\cc\com>
+
+
+
+
+
+
