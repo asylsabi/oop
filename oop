@@ -1,0 +1,91 @@
+import datetime
+from dataclasses import dataclass
+from typing import List
+
+@dataclass
+class Task:
+    name: str
+    description: str = ""
+    creation_date: datetime.date = datetime.date.today()
+    deadline: datetime.date
+    importance: str
+
+class TaskManager:
+    def init(self):
+        self.tasks = []
+
+    def add_task(self):
+        name = input("Enter the name of the task: ")
+        description = input("Enter the task description: ")
+        deadline = input("Enter the deadline in YYYY-MM-DD format: ")
+        importance = input("Enter the importance of the task: ")
+        deadline_date = datetime.datetime.strptime(deadline, "%Y-%m-%d").date()
+        task = Task(name=name, description=description, deadline=deadline_date, importance=importance)
+        self.tasks.append(task)
+        with open("tasks.txt", "a") as file:
+            file.write(f"{task.name}, {task.description}, {task.creation_date}, {task.deadline}, {task.importance}\n")
+
+    def delete_task(self, name):
+        for task in self.tasks:
+            if task.name == name:
+                self.tasks.remove(task)
+
+    def update_task(self, name):
+        for task in self.tasks:
+            if task.name == name:
+                new_name = input("Enter the new name of the task: ")
+                new_description = input("Enter the new task description: ")
+                new_deadline = input("Enter the new deadline in YYYY-MM-DD format: ")
+                new_importance = input("Enter the new importance of the task: ")
+                task.name = new_name
+                task.description = new_description
+                task.deadline = datetime.datetime.strptime(new_deadline, "%Y-%m-%d").date()
+                task.importance = new_importance
+
+    def remind_tasks(self):
+        today = datetime.date.today()
+        for task in self.tasks:
+            if task.deadline == today + datetime.timedelta(days=1):
+                print(f"Reminder: Task '{task.name}' is due tomorrow")
+
+    def today_tasks(self):
+        today = datetime.date.today()
+        for task in self.tasks:
+            if task.deadline == today:
+                print(f"Task: {task.name}")
+
+    def all_tasks(self):
+        for task in self.tasks:
+            print(f"Task: {task.name}, Description: {task.description}, Creation Date: {task.creation_date}, Deadline: {task.deadline}, Importance: {task.importance}")
+
+    def sort_by_importance(self, importance):
+        for task in sorted(self.tasks, key=lambda x: x.deadline):
+            if task.importance == importance:
+                print(f"Task: {task.name}, Deadline: {task.deadline}")
+task_manager = TaskManager()
+
+while True:
+    print("Select an action:")
+    print("1. Add a task")
+    print("2. Delete a task")
+    print("3. Update a task")
+    print("4. Remind tasks")
+    print("5. Show today's tasks")
+    print("6. Show all tasks")
+    print("7. Show tasks by importance")
+    print("8. Exit")
+
+choice = input("Enter choice (1-8): ")
+
+if choice == "1":
+    task_manager.add_task()
+elif choice == "2":
+    name = input("Enter the name of the task you want to delete: ")
+    task_manager.delete_task(name)
+elif choice == "3":
+    name = input("Enter the name of the task you want to update: ")
+    task_manager.update_task(name)
+elif choice == "4":
+    task_manager.remind_tasks()
+elif choice == "5":
+    task_manager.today_tasks()
