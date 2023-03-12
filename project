@@ -1,0 +1,125 @@
+from dataclasses import dataclass
+from datetime import datetime
+
+@dataclass
+class Task:
+    name: str
+    description: str
+    date: datetime
+    deadline: datetime
+    importance: str
+
+class TaskManager:
+    def _init_(self):
+        self.tasks = []
+
+    def AddTask(self):
+        name = input("Название вашей задачи: ")
+        description = input("Описание вашей задачи: ")
+        date = datetime.strptime(input("Дата создания задачи(дд.мм.гггг): "), '%d.%m.%Y')
+        deadline = datetime.strptime(input("Дедлайн(дд.мм.гггг): "), '%d.%m.%Y')
+        importance = input("Важность задачи (Норм или Очень важно): ")
+        task = Task(name=name, description=description, date=date, deadline=deadline, importance=importance)
+        self.tasks.append(task)
+
+    def delete_task(self):
+        index = int(input("Введите номер задачи, которую нужно удалить: ")) - 1
+        del self.tasks[index]
+
+    def update_task(self):
+        index = int(input("Номер задачи, которую нужно изменить: ")) - 1
+        task = self.tasks[index]
+        task.name = input("Новое название задачи: ")
+        task.description = input("Новое описание задачи: ")
+        task.date = datetime.strptime(input("Новую дата создания задачи(дд.мм.гггг): "), '%d.%m.%Y')
+        task.deadline = datetime.strptime(input("Дедлайн задачи(дд.мм.гггг): "), '%d.%m.%Y')
+        task.importance = input("Новую важность задачи (Норм или Очень важно): ")
+
+    def show_tasks(self):
+        if len(self.tasks) == 0:
+            print("Список задач пуст.")
+        else:
+            for i, task in enumerate(self.tasks):
+                print(f"{i + 1}. {task.name} ({task.importance}), Дедлайн: {task.deadline.strftime('%d.%m.%Y')}")
+
+    def run(self):
+        while True:
+            print("Выберите действие: \n 1) Добавить новую задачу; \n 2) Удалить задачу; \n 3) Изменить имеющуюся задачу; \n 4) Вывести список задач; \n 5) Выйти")
+            n = input()
+
+            if n == "1":
+                self.AddTask()
+            elif n == "2":
+                index = int(input("Введите номер задачи, которую нужно удалить: ")) - 1
+                self.delete_task(index)
+            elif n == "3":
+                index = int(input("Введите номер задачи, которую нужно изменить: ")) - 1
+                self.update_task(index)
+            elif n == "4":
+                self.show_tasks()
+            elif n == "5":
+                break
+            else:
+                print("Сделайте другой выбор")
+                    
+
+    def test_task_creation(self):
+        name = "Test task"
+        description = "This is a test task"
+        date = datetime(2023, 3, 11)
+        deadline = datetime(2023, 3, 12)
+        importance = "Норм"
+        task = Task(name=name, description=description, date=date, deadline=deadline, importance=importance)
+
+        assert task.name == name
+        assert task.description == description
+        assert task.date == date
+        assert task.deadline == deadline
+        assert task.importance == importance
+
+    def test_task_manager_add_task(self):
+        task_manager = TaskManager()
+        name = "Test task"
+        description = "This is a test task"
+        date = "11.03.2023"
+        deadline = "12.03.2023"
+        importance = "Норм"
+        task_manager.AddTask(name=name, description=description, date=date, deadline=deadline, importance=importance)
+
+        assert len(task_manager.tasks) == 1
+        task = task_manager.tasks[0]
+        assert task.name == name
+        assert task.description == description
+        assert task.date('%d.%m.%Y') == date
+        assert task.deadline('%d.%m.%Y') == deadline
+        assert task.importance == importance
+
+    def test_task_manager_delete_task(self):
+        task_manager = TaskManager()
+        task_manager.AddTask(name="Task 1", description="Description 1", date="11.03.2023", deadline="12.03.2023", importance="Норм")
+        task_manager.AddTask(name="Task 2", description="Description 2", date="12.03.2023", deadline="13.03.2023", importance="Норм")
+
+        task_manager.delete_task(1)
+        assert len(task_manager.tasks) == 1
+        assert task_manager.tasks[0].name == "Task 2"
+
+    def test_task_manager_update_task(self):
+        task_manager = TaskManager()
+        task_manager.AddTask(name="Task 1", description="Description 1", date="11.03.2023", deadline="12.03.2023", importance="Норм")
+
+        task_manager.update_task(0, name="Updated task", description="Updated description", date="11.03.2023", deadline="13.03.2023", importance="Норм")
+        assert len(task_manager.tasks) == 1
+        task = task_manager.tasks[0]
+        assert task.name == "Обновленная задача"
+        assert task.description == "Обновленное описание"
+        assert task.date('%d.%m.%Y') == "11.03.2023"
+        assert task.deadline('%d.%m.%Y') == "13.03.2023"
+        assert task.importance == "Норм"
+
+    def test_task_manager_show_tasks(self):
+        task_manager = TaskManager()
+        task_manager.AddTask(name="Task A", description="Description 1", date="11.03.2023", deadline="12.03.2023", importance="Норм")
+        task_manager.AddTask(name="Task B", description="Description 2", date="12.03.2023", deadline="13.03.2023", importance="Норм")
+
+    a=TaskManager()
+    a.run()
